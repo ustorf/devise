@@ -14,6 +14,11 @@ class Devise::SessionsController < DeviseController
     resource = warden.authenticate!(auth_options)
     set_flash_message(:notice, :signed_in) if is_navigational_format?
     sign_in(resource_name, resource)
+    # DIRTY, DIRTY, DIRTY!!!!!!!!!!!!!
+    resource.channel_accounts.each do |channel_account|
+      puts "CALLING GET CHANNEL ACCOUNT ITEMS FOR #{channel_account}"
+      channel_account.get_channel_account_items
+    end
     respond_with resource, :location => after_sign_in_path_for(resource)
   end
 
